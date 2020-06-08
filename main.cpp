@@ -9,7 +9,7 @@ using namespace std;
 
 int main(void)
 {
-    vector<unsigned short> E{1, 2, 2, 2, 2, 4, 5, 56, 56, 56, 240, 240, 255, 2, 0};
+    vector<unsigned short> E{1, 2, 2, 3, 3, 3, 4, 4, 4, 4};
 
     ofstream fout;
     string filename = "output.encoded";
@@ -19,7 +19,9 @@ int main(void)
 		cout << "Failed to open FILE" << endl;
 		exit(EXIT_FAILURE);
 	}
-
+    //string a("011");
+    
+    //fout.write(reinterpret_cast<char *>(&a[0]), sizeof(char)*3);
     HuffmanEncoder e;
     e.performEncoding(E, fout);
 

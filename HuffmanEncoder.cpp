@@ -278,7 +278,8 @@ void HuffmanEncoder::recHuffCodeTbl(ofstream &fout)
 			fout.write(reinterpret_cast<char *>(&len), sizeof(len));
 
             // 1bitずつにできそう
-			fout.write(reinterpret_cast<char *>(&symCodeWord[i]), sizeof(char) * symCodeWord[i].size());
+            cout << (int)sym << ": " << symCodeWord[i] << endl;
+			fout.write(reinterpret_cast<char *>(&symCodeWord[i][0]), sizeof(char) * (int)symCodeWord[i].size());
 		}
 	}
 
@@ -298,15 +299,13 @@ void HuffmanEncoder::bitStream(const vector<unsigned short> &symData, ofstream &
 		bitUnitOper(huffmanCode, fout);
 	}
 
-	fout.write(reinterpret_cast<char *>(&bitBuf), sizeof(char) * (bitBufIdx + 1));
+	fout.write(reinterpret_cast<char *>(&bitBuf[0]), sizeof(unsigned char) * (bitBufIdx + 1));
 	
 	fout.seekp(locaOfTotalBitNum, ios::beg);
 	fout.write(reinterpret_cast<char *>(&totalNumOfBit), sizeof(totalNumOfBit));
 	fout.seekp(0, ios::end);
 
-	puts("Complete to build bitstream");
-	puts("");
-	puts("");
+	cout << "Complete to build bitstream" << endl << endl << endl;
 }
 
 
@@ -339,7 +338,7 @@ void HuffmanEncoder::bitUnitOper(string huffmanCode, ofstream &fout)
 			bitBufIdx += 1;
 
 			if (sizeof(bitBuf) <= bitBufIdx) {
-				fout.write(reinterpret_cast<char *>(&bitBuf), sizeof(bitBuf));
+				fout.write(reinterpret_cast<char *>(&bitBuf[0]), sizeof(unsigned char) * (int)bitBuf.size());
 
                 bitBuf.resize(BUF_SIZE, 0);
 				bitBufIdx = 0;
