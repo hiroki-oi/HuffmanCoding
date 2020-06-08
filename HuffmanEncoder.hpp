@@ -3,48 +3,35 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 
 #include "HuffmanTreeNode.hpp"
-
-using namespace std;
 
 class HuffmanEncoder
 {
 private:
 
-	int symFreq[MAX];
-
-	int cntNonZeroSym;
+	std::vector<int> symFreq;
+    int cntNonZeroSym;
 
 	int lastHeapIdx;
-
-	HuffmanTreeNode **heap;
-
+	std::vector<HuffmanTreeNode*> heap; // Bynary heap
 	HuffmanTreeNode *newNode;
-
 	HuffmanTreeNode *rootNode;
-
 	HuffmanTreeNode *first;
 	HuffmanTreeNode *second;
-
 	HuffmanTreeNode *mergeOfTwoChild;
 
-	char *symCodeWord[MAX];
-	char *huffmanCode;
-
-	char codeWordBuf[NUM];
+    std::vector<std::string> symCodeWord;
+	std::string huffmanCode;
 	int codeWordLen;
 
 	int totalNumOfSym;
 
-	char recBuf[NUM];
-
-	short sym;
-	unsigned char len;
-
-	unsigned char bitBuf[BUF_SIZE];
+	std::vector<unsigned char> bitBuf;
 	int bitBufIdx;
 	int bitShiftCnt;
 	char bitShiftVal;
@@ -53,7 +40,7 @@ private:
 	int totalNumOfBit;
 
 
-	void cntSymFreq(const vector<unsigned short> &symData);
+	void cntSymFreq(const std::vector<unsigned short> &symData);
 	void cntNZSym();
 
 	int getHighPriorityChildIdx(int index);
@@ -62,10 +49,10 @@ private:
 	int getLeftChildIdx(int index);
 	int getRightChildIdx(int index);
 
-	int chkEmptyHeapMem();
+	bool chkEmptyHeapMem();
 
-	void addToHeap(HuffmanTreeNode *newNode);
-	HuffmanTreeNode* popToHeap();
+	void upHeap(HuffmanTreeNode *newNode);
+	HuffmanTreeNode* downHeap();
 
 	void alloHeapMem();
 	void alloNewNode();
@@ -76,13 +63,13 @@ private:
 	
 	void prtHuffCodeTbl();
 
-	void recHuffCodeTbl(ofstream &fout);
+	void recHuffCodeTbl(std::ofstream &fout);
 
-	void bitStream(const vector<unsigned short> &symData, ofstream &fout);
+	void bitStream(const std::vector<unsigned short> &symData, std::ofstream &fout);
 
-	int judgement(char *oneORzero);
+	int judgement(char oneORzero);
 
-	void bitUnitOper(char huffmanCode[], ofstream &fout);
+	void bitUnitOper(std::string huffmanCode, std::ofstream &fout);
 
 	void releaseNewNodeMem(HuffmanTreeNode *rootNode);
 	void releaseAlloMem();
@@ -91,7 +78,7 @@ public:
 
 	HuffmanEncoder();
 	~HuffmanEncoder();
-	void performEncoding(const vector<unsigned short> &symData, ofstream &fout);
+	void performEncoding(const std::vector<unsigned short> &symData, std::ofstream &fout);
 };
 
 #endif /* HuffmanEncoder_hpp */

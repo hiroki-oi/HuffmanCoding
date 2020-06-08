@@ -20,9 +20,8 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-    HuffmanEncoder *e = new HuffmanEncoder;
-    e->performEncoding(E, fout);
-    delete(e);
+    HuffmanEncoder e;
+    e.performEncoding(E, fout);
 
     return 0;
 }
