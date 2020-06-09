@@ -1,13 +1,15 @@
 #ifndef HuffmanTreeNode_hpp
 #define HuffmanTreeNode_hpp
 
-constexpr auto MAX = 65536;
-constexpr auto BUF_SIZE = 1000;
-constexpr auto NUM = 100;
+#include <cmath>
+
+#define MAX pow(2, sizeof(Symbol) * 8 -1)
+#define BUF_SIZE 1000
+typedef unsigned short Symbol;
 
 struct HuffmanTreeNode
 {
-	unsigned short symbol;
+	Symbol symbol;
 	int frequency;
 
 	HuffmanTreeNode *left;

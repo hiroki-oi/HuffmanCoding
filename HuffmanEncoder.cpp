@@ -38,7 +38,7 @@ HuffmanEncoder::~HuffmanEncoder()
 }
 
 
-void HuffmanEncoder::performEncoding(const vector<unsigned short> &symData, ofstream &fout)
+void HuffmanEncoder::performEncoding(const vector<Symbol> &symData, ofstream &fout)
 {
 	cntSymFreq(symData);
 	cntNZSym();
@@ -58,7 +58,7 @@ void HuffmanEncoder::performEncoding(const vector<unsigned short> &symData, ofst
 
 
 
-void HuffmanEncoder::cntSymFreq(const vector<unsigned short> &symData)
+void HuffmanEncoder::cntSymFreq(const vector<Symbol> &symData)
 {
 	for (int i = 0; i < (int)symData.size(); i++) {
 		symFreq[symData[i]]++;
@@ -190,7 +190,7 @@ void HuffmanEncoder::alloNewNode()
 				cout << "Failed to allocate newnode(NODE) !!" << endl;
 				exit(EXIT_FAILURE);
 			} else {
-				newNode->symbol = i;
+				newNode->symbol = (Symbol)i;
 				newNode->frequency = symFreq[i];
 				newNode->left = nullptr;
 				newNode->right = nullptr;
@@ -271,7 +271,7 @@ void HuffmanEncoder::recHuffCodeTbl(ofstream &fout)
 
 	for(int i = 0; i < MAX; i++) {
 		if ((int)symCodeWord[i].size() > 0) {
-			short sym = (short)i;                                                          
+			Symbol sym = (Symbol)i;                                                          
 			unsigned char len = (unsigned char)symCodeWord[i].size();         
 
 			fout.write(reinterpret_cast<char *>(&sym), sizeof(sym));
@@ -288,7 +288,7 @@ void HuffmanEncoder::recHuffCodeTbl(ofstream &fout)
 }
 
 
-void HuffmanEncoder::bitStream(const vector<unsigned short> &symData, ofstream &fout)
+void HuffmanEncoder::bitStream(const vector<Symbol> &symData, ofstream &fout)
 {
 	locaOfTotalBitNum = (int)fout.tellp();
 

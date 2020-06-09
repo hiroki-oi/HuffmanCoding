@@ -1,8 +1,6 @@
 #ifndef HuffmanEncoder_hpp
 #define HuffmanEncoder_hpp
 
-#include <stdio.h>
-#include <string.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -40,7 +38,7 @@ private:
 	int totalNumOfBit;
 
 
-	void cntSymFreq(const std::vector<unsigned short> &symData);
+	void cntSymFreq(const std::vector<Symbol> &symData);
 	void cntNZSym();
 
 	int getHighPriorityChildIdx(int index);
@@ -65,7 +63,7 @@ private:
 
 	void recHuffCodeTbl(std::ofstream &fout);
 
-	void bitStream(const std::vector<unsigned short> &symData, std::ofstream &fout);
+	void bitStream(const std::vector<Symbol> &symData, std::ofstream &fout);
 
 	int judgement(char oneORzero);
 
@@ -78,7 +76,7 @@ public:
 
 	HuffmanEncoder();
 	~HuffmanEncoder();
-	void performEncoding(const std::vector<unsigned short> &symData, std::ofstream &fout);
+	void performEncoding(const std::vector<Symbol> &symData, std::ofstream &fout);
 };
 
 #endif /* HuffmanEncoder_hpp */
