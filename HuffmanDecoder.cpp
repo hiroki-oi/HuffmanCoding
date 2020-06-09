@@ -182,7 +182,7 @@ void HuffmanDecoder::pushSymData(vector<Symbol> &symData)
 
 	if (totalNumOfBit == 0 && copyTotalNumOfBit == countBit) {
 		for (int i = 0; i < symBufIdx; i++) {
-				symData.push_back(symBuf[i]);
+			symData.push_back(symBuf[i]);
 		}
 
 		cout << "----------------------------------------------------> Decode" << endl;
