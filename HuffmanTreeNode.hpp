@@ -3,8 +3,9 @@
 
 #include <cmath>
 
-#define MAX pow(2, sizeof(Symbol) * 8 -1)
+#define MAX pow(2, sizeof(Symbol) * 8)
 #define BUF_SIZE 1000
+
 typedef unsigned short Symbol;
 
 struct HuffmanTreeNode

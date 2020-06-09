@@ -26,6 +26,8 @@ HuffmanEncoder::HuffmanEncoder()
 
 	locaOfTotalBitNum = 0;
 	totalNumOfBit = 0;
+
+    cout << "MAX: " << MAX << endl;
 }
 
 
@@ -278,8 +280,7 @@ void HuffmanEncoder::recHuffCodeTbl(ofstream &fout)
 			fout.write(reinterpret_cast<char *>(&len), sizeof(len));
 
             // 1bitずつにできそう
-            cout << (int)sym << ": " << symCodeWord[i] << endl;
-			fout.write(reinterpret_cast<char *>(&symCodeWord[i][0]), sizeof(char) * (int)symCodeWord[i].size());
+            fout.write(symCodeWord[i].c_str(), sizeof(char) * (int)symCodeWord[i].size());
 		}
 	}
 

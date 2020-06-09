@@ -2,8 +2,10 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cstdio>
 
 #include "HuffmanEncoder.hpp"
+#include "HuffmanDecoder.hpp"
 
 using namespace std;
 
@@ -19,11 +21,26 @@ int main(void)
 		cout << "Failed to open FILE" << endl;
 		exit(EXIT_FAILURE);
 	}
-    //string a("011");
     
-    //fout.write(reinterpret_cast<char *>(&a[0]), sizeof(char)*3);
-    HuffmanEncoder e;
-    e.performEncoding(E, fout);
+    HuffmanEncoder *e = new HuffmanEncoder;
+    e->performEncoding(E, fout);
+    delete(e);
 
+    ifstream fin;
+    fin.open(filename, ios::binary);
+    if(fin.fail()) {
+		cout << "Failed to open FILE" << endl;
+		exit(EXIT_FAILURE);
+	}
+    
+    vector<unsigned short> D;
+    HuffmanDecoder *d = new HuffmanDecoder;
+    d->performDecoding(D, fin);
+    delete(d);
+
+    cout << "D.size(): " << D.size() << endl;
+    for(int i = 0; i < (int)D.size(); i++) {
+        cout << D[i] << endl;
+    }
     return 0;
 }

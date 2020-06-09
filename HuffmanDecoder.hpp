@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cstring>
 
 #include "HuffmanTreeNode.hpp"
 
@@ -19,12 +20,7 @@ private:
 	int totalNumOfNode;
 	int totalCodeLen;
 
-	short sym;
-	unsigned char len;
-
-	char codeBuf[BUF_SIZE];
-
-	unsigned short symBuf[BUF_SIZE];
+	std::vector<Symbol> symBuf;
 
 	int totalNumOfBit;
 	int copyTotalNumOfBit;
@@ -35,19 +31,19 @@ private:
 
 	void rebuildHuffmanTree(std::ifstream &fin);
 
-	int judgement(char *oneORzero);
+	int judgement(char oneORzero);
 	void getLeftChildAddr();
 	void getRightChildAddr();
 	HuffmanTreeNode* createNewNode();
 
-	void decode(std::vector<unsigned short> &symData, std::ifstream &fin);
-	void recData(std::vector<unsigned short> &symData);
+	void decode(std::vector<Symbol> &symData, std::ifstream &fin);
+	void pushSymData(std::vector<Symbol> &symData);
 
 public:
 
 	HuffmanDecoder();
 	~HuffmanDecoder();
-	void performDecoding(std::vector<unsigned short> &symData, std::ifstream &fin);
+	void performDecoding(std::vector<Symbol> &symData, std::ifstream &fin);
 };
 
 #endif /* HuffmanDecoder_hpp */

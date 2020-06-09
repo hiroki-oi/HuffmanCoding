@@ -11,12 +11,7 @@ HuffmanDecoder::HuffmanDecoder()
 	totalNumOfNode = 0;
 	totalCodeLen = 0;
 
-	sym = 0;
-	len = NULL;
-
-	memset(codeBuf, NULL, sizeof(codeBuf));
-
-	memset(symBuf, 0, sizeof(symBuf));
+	symBuf.resize(BUF_SIZE, 0);
 
 	totalNumOfBit = 0;
 	copyTotalNumOfBit = 0;
@@ -49,18 +44,23 @@ void HuffmanDecoder::rebuildHuffmanTree(ifstream &fin)
 	for (int i = 0; i < cntNonZeroSym; i++) {
 		cur = rootNode;                                         
 
+        Symbol sym;
+        unsigned char len;
+
 		fin.read(reinterpret_cast<char *>(&sym), sizeof(sym));
 		fin.read(reinterpret_cast<char *>(&len), sizeof(len));
 
-		fin.read(reinterpret_cast<char *>(&codeBuf), sizeof(unsigned char) * (int)len);
+		string huffmanCode((int)len, '\0');
 
-		codeBuf[(int)len] = NULL;
+		fin.read(reinterpret_cast<char *>(&huffmanCode[0]), sizeof(char) * (int)len);
+
+		cout << "sym: " << sym << " len: " << len << " code: " << huffmanCode << endl;
 		totalCodeLen += (int)len;
 
-		for (unsigned int j = 0; j < strlen(codeBuf); j++) {
-			if (judgement(&codeBuf[j]) == 0) {
+		for (unsigned int j = 0; j < (int)huffmanCode.size(); j++) {
+			if (judgement(huffmanCode[j]) == 0) {
                 getLeftChildAddr();  // 0 is left direction
-            } else if (judgement(&codeBuf[j]) == 1) {
+            } else if (judgement(huffmanCode[j]) == 1) {
                 getRightChildAddr(); // 1 is right direction
             } else {
 				cout << "---------- CRITICAL ERROR : INVALID Huffman Encode Table ----------" << endl;
@@ -80,180 +80,124 @@ void HuffmanDecoder::rebuildHuffmanTree(ifstream &fin)
 }
 
 
-int HuffmanDecoder::judgement(char *oneORzero)
+int HuffmanDecoder::judgement(char oneORzero)
 {
-	if (*oneORzero == '0')                     
-		return FALSE;
-	else if (*oneORzero == '1')                
-		return TRUE;
-	else
-	{
-		puts("---------- CRITICAL ERROR : INVALID Huffman Encode Table ----------");
-
-		exit(1);
+	if (oneORzero == '0') {
+        return 0;
+    } else if (oneORzero == '1') {          
+		return 1;
+    } else {
+		cout << "---------- CRITICAL ERROR : INVALID Huffman Encode Table ----------" << endl;
+		exit(EXIT_FAILURE);
 	}
 }
 
 
 void HuffmanDecoder::getLeftChildAddr()
 {
-	if (cur->left == NULL)
-		cur->left = createNewNode();
-
-
+	if (cur->left == nullptr) {
+        cur->left = createNewNode();
+    }
+	
 	cur = cur->left;
-
 	totalNumOfNode += 1;
 }
 
 
 void HuffmanDecoder::getRightChildAddr()
 {
-	if (cur->right == NULL)
-		cur->right = createNewNode();
-
-
+	if (cur->right == nullptr) {
+        cur->right = createNewNode();
+    }
+	
 	cur = cur->right;
-
 	totalNumOfNode += 1;
 }
 
 
-HuffmantreeNode* HuffmanDecoder::createNewNode()
+HuffmanTreeNode* HuffmanDecoder::createNewNode()
 {
-	HuffmantreeNode *newNode = (HuffmantreeNode *)calloc(1, sizeof(HuffmantreeNode));
+	HuffmanTreeNode *newNode = new HuffmanTreeNode;
 
 
-	if (newNode == NULL)
+	if (newNode == nullptr)
 	{
-		puts("Failed to allocate new node memory !!");
-
-		return NULL;
+		cout << "Failed to allocate new node memory !!" << endl;
+		return nullptr;
 	}
 
-
-	newNode->left = NULL;
-
-	newNode->right = NULL;
-
+	newNode->left = nullptr;
+	newNode->right = nullptr;
 
 	return newNode;
 }
 
 
-void HuffmanDecoder::decode(vector<unsigned short> &symData, ifstream &fin)
+void HuffmanDecoder::decode(vector<Symbol> &symData, ifstream &fin)
 {
 	cur = rootNode;
 
 	fin.read(reinterpret_cast<char *>(&totalNumOfBit), sizeof(totalNumOfBit));
 
-	printf("totalNumOfBit: %d\n", totalNumOfBit);
+	// 自分でもよくわからない
 	if (totalNumOfBit != 0) {
 		copyTotalNumOfBit = totalNumOfBit;
-		memset(codeBuf, NULL, sizeof(codeBuf));
+		string codeBuf(BUF_SIZE, '\0');
 
-		int byteCount = 0;
+		int byteCNT = 0;
 
-		while (flag == TRUE)
-		{
+		while (flag) {
 			int readCNT = 0;
-			for (int i = 0; i < (int)sizeof(codeBuf); i++) {
-				if (byteCount > copyTotalNumOfBit / 8) break;
+			for (int i = 0; i < (int)codeBuf.size(); i++) {
+				if (byteCNT > copyTotalNumOfBit / 8) break;
 				fin.read(reinterpret_cast<char *>(&codeBuf[i]), sizeof(codeBuf[i]));
-				byteCount++;
+				byteCNT++;
 				readCNT++;
 			}
 			for (int i = 0; i < readCNT; i++) {
 				for (int j = 0; j < 8; j++) {
 					if ((char)(codeBuf[i] & 0x80) == 0) {
 						cur = cur->left;
-					}
-					else {
+					} else {
 						cur = cur->right;
 					}
 
 					codeBuf[i] = codeBuf[i] << 1;
-
 					totalNumOfBit -= 1;
-
 					countBit += 1;
 
-
-					if (cur->left == NULL && cur->right == NULL) {
-						recData(symData);
+					if (cur->left == nullptr && cur->right == nullptr) {
+						pushSymData(symData);
 					}
 				}
 			}
 		}
 	}
-	/*copyTotalNumOfBit = totalNumOfBit;
-	memset(codeBuf, NULL, sizeof(codeBuf));
-	int byteCount = 0;
-	while (flag == TRUE)
-	{
-		int readCNT = 0;
-		for (int i = 0; i < (int)sizeof(codeBuf); i++) {
-			if (byteCount > copyTotalNumOfBit / 8) break;
-			fin.read(reinterpret_cast<char *>(&codeBuf[i]), sizeof(codeBuf[i]));
-			byteCount++;
-			readCNT++;
-		}
-		for (int i = 0; i < readCNT; i++) {
-			for (int j = 0; j < 8; j++) {
-				if ((char)(codeBuf[i] & 0x80) == 0) {            
-					cur = cur->left;
-				}
-				else {
-					cur = cur->right;
-				}
-				codeBuf[i] = codeBuf[i] << 1;
-				totalNumOfBit -= 1;
-				countBit += 1;
-				if (cur->left == NULL && cur->right == NULL) {
-					recData(symData);
-				}
-			}
-		}
-	}*/
 }
 
 
-void HuffmanDecoder::recData(vector<unsigned short> &symData)
+void HuffmanDecoder::pushSymData(vector<Symbol> &symData)
 {
 	symBuf[symBufIdx] = cur->symbol;
-
-	symBufIdx += 1;
+	symBufIdx++;
 
 	cur = rootNode;
 
-
-	if (totalNumOfBit == 0)
-	{
-		if (copyTotalNumOfBit == countBit)
-		{
-			for (int i = 0; i < symBufIdx; i++) {
+	if (totalNumOfBit == 0 && copyTotalNumOfBit == countBit) {
+		for (int i = 0; i < symBufIdx; i++) {
 				symData.push_back(symBuf[i]);
-			}
-
-
-			puts("----------------------------------------------------> Decode");
-			puts("Complete to decode");
-			puts("");
-
-			flag = FALSE;
 		}
-	}
-	else
-	{
-		if (symBufIdx == sizeof(symBuf) / 2)
-		{
-			for (int i = 0; i < sizeof(symBuf) / 2; i++) {
-				symData.push_back(symBuf[i]);
-			}
+
+		cout << "----------------------------------------------------> Decode" << endl;
+		cout << "Complete to decode" << endl << endl;
+
+		flag = false;
+	} else if (symBufIdx == (int)symBuf.size() / 2) {
+		for (int i = 0; i < (int)symBuf.size() / 2; i++) {
+			symData.push_back(symBuf[i]);
+		}
 		
-			memset(symBuf, 0, sizeof(symBuf));
-
-			symBufIdx = 0;
-		}
+		symBuf.resize(BUF_SIZE, 0);
+		symBufIdx = 0;
 	}
 }
