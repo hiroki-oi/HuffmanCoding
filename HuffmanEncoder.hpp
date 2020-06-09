@@ -13,7 +13,7 @@ class HuffmanEncoder
 private:
 
 	std::vector<int> symFreq;
-    int cntNonZeroSym;
+	int cntNonZeroSym;
 
 	int lastHeapIdx;
 	std::vector<HuffmanTreeNode*> heap; // Bynary heap
@@ -22,8 +22,8 @@ private:
 	HuffmanTreeNode *first;
 	HuffmanTreeNode *second;
 	HuffmanTreeNode *mergeOfTwoChild;
-
-    std::vector<std::string> symCodeWord;
+	
+	std::vector<std::string> symCodeWord;
 	std::string huffmanCode;
 	int codeWordLen;
 
