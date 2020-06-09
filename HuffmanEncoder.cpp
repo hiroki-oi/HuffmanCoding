@@ -310,10 +310,10 @@ int HuffmanEncoder::judgement(char oneORzero)
 {
 	if (oneORzero == '0') {
 		return 0;
-    }                 
+	}                 
 	if (oneORzero == '1')  {
 		return 1;
-    }
+	}
 	
 	cout << "---------- CRITICAL ERROR : INVALID Huffman Encode Table ----------" << endl;
 	exit(EXIT_FAILURE);
