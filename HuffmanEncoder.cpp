@@ -85,9 +85,9 @@ int HuffmanEncoder::getHighPriorityChildIdx(int index)
 	} else {
 		if (heap[getLeftChildIdx(index)]->frequency < heap[getRightChildIdx(index)]->frequency) {
 			return getLeftChildIdx(index);
-        } else {
+		} else {
 			return getRightChildIdx(index);
-        }	
+		}	
 	}
 }
 
@@ -133,7 +133,7 @@ void HuffmanEncoder::upHeap(HuffmanTreeNode *newNode)
 			index = getParentIdx(index);
 		} else {
 			break;
-        }
+		}
 	}
 
 	heap[index] = newNode;
@@ -238,8 +238,8 @@ void HuffmanEncoder::affixToCodeWord(HuffmanTreeNode *rootNode, char codeWord)
 	huffmanCode += codeWord;                     
 
 	if (rootNode->left == nullptr && rootNode->right == nullptr) {
-        totalNumOfSym += 1;
-        symCodeWord[(unsigned short)rootNode->symbol] = huffmanCode;
+		totalNumOfSym++;
+		symCodeWord[(unsigned short)rootNode->symbol] = huffmanCode;
 	} else {
 		affixToCodeWord(rootNode->left, '0');
 		affixToCodeWord(rootNode->right, '1');
@@ -259,7 +259,7 @@ void HuffmanEncoder::prtHuffCodeTbl()
 		cout << "Complete to build the huffman code table" << endl << endl << endl;
 	} else {
 		cout << "Failed to build the huffman code table !!" << endl;
-    }
+	}
 }
 
 
@@ -313,8 +313,8 @@ int HuffmanEncoder::judgement(char oneORzero)
     }                 
 	if (oneORzero == '1')  {
 		return 1;
-    }             
-		
+    }
+	
 	cout << "---------- CRITICAL ERROR : INVALID Huffman Encode Table ----------" << endl;
 	exit(EXIT_FAILURE);
 }
@@ -349,7 +349,7 @@ void HuffmanEncoder::releaseNewNodeMem(HuffmanTreeNode *rootNode)
 {
 	if (rootNode->left == nullptr && rootNode->right == nullptr) {
 		delete(rootNode);
-    } else {
+	} else {
 		releaseNewNodeMem(rootNode->left);
 		rootNode->left = nullptr;
 
