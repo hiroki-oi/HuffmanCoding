@@ -27,7 +27,7 @@ HuffmanDecoder::~HuffmanDecoder()
 }
 
 
-void HuffmanDecoder::performDecoding(vector<unsigned short> &symData, ifstream &fin)
+void HuffmanDecoder::performDecoding(vector<Symbol> &symData, ifstream &fin)
 {
 	rebuildHuffmanTree(fin);
 	decode(symData, fin);

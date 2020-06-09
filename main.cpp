@@ -39,7 +39,7 @@ int main(void)
 
     cout << "D.size(): " << D.size() << endl;
     for(int i = 0; i < (int)D.size(); i++) {
-        cout << D[i] << endl;
+        cout << (int)D[i] << endl;
     }
     return 0;
 }
