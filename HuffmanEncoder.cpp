@@ -5,9 +5,9 @@ using namespace std;
 HuffmanEncoder::HuffmanEncoder()
 {
 	symFreq.resize(MAX, 0);
-    cntNonZeroSym = 0;
-
-    lastHeapIdx = 0;
+	cntNonZeroSym = 0;
+	
+	lastHeapIdx = 0;
 	newNode = nullptr;
 	rootNode = nullptr;
 	first = nullptr;
@@ -15,7 +15,7 @@ HuffmanEncoder::HuffmanEncoder()
 	mergeOfTwoChild = nullptr;
 
 	symCodeWord.resize(MAX);
-    codeWordLen = -1;
+	codeWordLen = -1;
 
 	totalNumOfSym = 0;
 
@@ -26,8 +26,6 @@ HuffmanEncoder::HuffmanEncoder()
 
 	locaOfTotalBitNum = 0;
 	totalNumOfBit = 0;
-
-    cout << "MAX: " << MAX << endl;
 }
 
 
@@ -82,15 +80,13 @@ int HuffmanEncoder::getHighPriorityChildIdx(int index)
 {
 	if (getLeftChildIdx(index) > lastHeapIdx) {
 		return 0;
-	}
-	else if (getLeftChildIdx(index) == lastHeapIdx) {
+	} else if (getLeftChildIdx(index) == lastHeapIdx) {
 		return getLeftChildIdx(index);
-	}
-	else {
+	} else {
 		if (heap[getLeftChildIdx(index)]->frequency < heap[getRightChildIdx(index)]->frequency) {
-            return getLeftChildIdx(index);
+			return getLeftChildIdx(index);
         } else {
-            return getRightChildIdx(index);
+			return getRightChildIdx(index);
         }	
 	}
 }
@@ -124,25 +120,25 @@ bool HuffmanEncoder::chkEmptyHeapMem()
 void HuffmanEncoder::upHeap(HuffmanTreeNode *newNode)
 {
 	int index = lastHeapIdx + 1;
-
-    // Heap is 1-origin
+	
+	// Heap is 1-origin
 	while (index != 1) {
 		if (index > cntNonZeroSym + 1) {
-			cout << "Try to refer over the heap Memory, program is terminated !!" << endl;;
-            exit(EXIT_FAILURE);
+			cout << "Try to refer over the heap Memory, program is terminated !!" << endl;
+			exit(EXIT_FAILURE);
 		}
 
 		if (newNode->frequency < heap[getParentIdx(index)]->frequency) {
 			heap[index] = heap[getParentIdx(index)];
 			index = getParentIdx(index);
 		} else {
-            break;
+			break;
         }
 	}
 
 	heap[index] = newNode;
 
-	lastHeapIdx += 1;
+	lastHeapIdx++;
 }
 
 
@@ -167,7 +163,7 @@ HuffmanTreeNode* HuffmanEncoder::downHeap()
 	}
 
 	heap[parentIdx] = lastNode;
-    lastHeapIdx -= 1;
+	lastHeapIdx--;
 
 	return returnRoot;
 }
@@ -176,8 +172,8 @@ HuffmanTreeNode* HuffmanEncoder::downHeap()
 void HuffmanEncoder::alloHeapMem()
 {
     heap.resize(cntNonZeroSym + 1);
-
-	cout << "------------------------------------------------------> Heap mem & node to heap" << endl;;
+	
+	cout << "------------------------------------------------------> Heap mem & node to heap" << endl;
 	cout << "Complete to allocate the heap memory(NODE)" << endl;
 }
 
@@ -223,8 +219,8 @@ void HuffmanEncoder::huffmanTree()
 			cout << "Failed to allocate mergeOfTwoChild memory(NODE)" << endl;
 			exit(EXIT_FAILURE);
 		}
-
-        // Making trees
+		
+		// Making trees
 		mergeOfTwoChild->symbol = 0; // Symbol has no meaning
 		mergeOfTwoChild->frequency = first->frequency + second->frequency;
 		mergeOfTwoChild->left = first;
@@ -262,7 +258,7 @@ void HuffmanEncoder::prtHuffCodeTbl()
 	if (cntNonZeroSym == totalNumOfSym) {
 		cout << "Complete to build the huffman code table" << endl << endl << endl;
 	} else {
-        cout << "Failed to build the huffman code table !!" << endl;
+		cout << "Failed to build the huffman code table !!" << endl;
     }
 }
 
@@ -278,9 +274,9 @@ void HuffmanEncoder::recHuffCodeTbl(ofstream &fout)
 
 			fout.write(reinterpret_cast<char *>(&sym), sizeof(sym));
 			fout.write(reinterpret_cast<char *>(&len), sizeof(len));
-
-            // 1bitずつにできそう
-            fout.write(symCodeWord[i].c_str(), sizeof(char) * (int)symCodeWord[i].size());
+			
+			// 1bitずつにできそう
+			fout.write(symCodeWord[i].c_str(), sizeof(char) * (int)symCodeWord[i].size());
 		}
 	}
 
@@ -313,10 +309,10 @@ void HuffmanEncoder::bitStream(const vector<Symbol> &symData, ofstream &fout)
 int HuffmanEncoder::judgement(char oneORzero)
 {
 	if (oneORzero == '0') {
-        return 0;
+		return 0;
     }                 
 	if (oneORzero == '1')  {
-        return 1;
+		return 1;
     }             
 		
 	cout << "---------- CRITICAL ERROR : INVALID Huffman Encode Table ----------" << endl;
@@ -338,10 +334,10 @@ void HuffmanEncoder::bitUnitOper(string huffmanCode, ofstream &fout)
 			bitShiftCnt = 7;
 			bitBufIdx += 1;
 
-			if (sizeof(bitBuf) <= bitBufIdx) {
+			if ((int)bitBuf.size() <= bitBufIdx) {
 				fout.write(reinterpret_cast<char *>(&bitBuf[0]), sizeof(unsigned char) * (int)bitBuf.size());
-
-                bitBuf.resize(BUF_SIZE, 0);
+				
+				for(int j = 0; j < (int)bitBuf.size(); j++) bitBuf[j] = 0;
 				bitBufIdx = 0;
 			}
 		}
@@ -351,12 +347,11 @@ void HuffmanEncoder::bitUnitOper(string huffmanCode, ofstream &fout)
 
 void HuffmanEncoder::releaseNewNodeMem(HuffmanTreeNode *rootNode)
 {
-	if (rootNode->left == nullptr && rootNode->right == nullptr) 
-    {
-        delete(rootNode);
+	if (rootNode->left == nullptr && rootNode->right == nullptr) {
+		delete(rootNode);
     } else {
 		releaseNewNodeMem(rootNode->left);
-        rootNode->left = nullptr;
+		rootNode->left = nullptr;
 
 		releaseNewNodeMem(rootNode->right);
 		rootNode->right = NULL;
