@@ -2,7 +2,6 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include <cstdio>
 
 #include "HuffmanEncoder.hpp"
 #include "HuffmanDecoder.hpp"
