@@ -53,8 +53,7 @@ void HuffmanDecoder::rebuildHuffmanTree(ifstream &fin)
 		string huffmanCode((int)len, '\0');
 
 		fin.read(reinterpret_cast<char *>(&huffmanCode[0]), sizeof(char) * (int)len);
-
-		cout << "sym: " << sym << " len: " << len << " code: " << huffmanCode << endl;
+		
 		totalCodeLen += (int)len;
 
 		for (unsigned int j = 0; j < (int)huffmanCode.size(); j++) {
@@ -96,7 +95,7 @@ int HuffmanDecoder::judgement(char oneORzero)
 void HuffmanDecoder::getLeftChildAddr()
 {
 	if (cur->left == nullptr) {
-        cur->left = createNewNode();
+		cur->left = createNewNode();
 	}
 	
 	cur = cur->left;
@@ -107,7 +106,7 @@ void HuffmanDecoder::getLeftChildAddr()
 void HuffmanDecoder::getRightChildAddr()
 {
 	if (cur->right == nullptr) {
-        cur->right = createNewNode();
+		cur->right = createNewNode();
 	}
 	
 	cur = cur->right;
