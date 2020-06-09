@@ -32,7 +32,7 @@ private:
 	std::vector<unsigned char> bitBuf;
 	int bitBufIdx;
 	int bitShiftCnt;
-	char bitShiftVal;
+	unsigned char bitShiftVal;
 
 	int locaOfTotalBitNum;
 	int totalNumOfBit;

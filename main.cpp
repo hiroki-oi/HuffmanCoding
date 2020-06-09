@@ -24,6 +24,8 @@ int main(void)
     HuffmanEncoder *e = new HuffmanEncoder;
     e->performEncoding(E, fout);
     delete(e);
+    unsigned short add = 5;
+    fout.write(reinterpret_cast<char *>(&add), sizeof(add));
 
     ifstream fin;
     fin.open(filename, ios::binary);
