@@ -42,10 +42,10 @@ void HuffmanDecoder::rebuildHuffmanTree(ifstream &fin)
 	cur = rootNode;
 
 	for (int i = 0; i < cntNonZeroSym; i++) {
-		cur = rootNode;                                         
-
-        Symbol sym;
-        unsigned char len;
+		cur = rootNode;
+		
+		Symbol sym;
+		unsigned char len;
 
 		fin.read(reinterpret_cast<char *>(&sym), sizeof(sym));
 		fin.read(reinterpret_cast<char *>(&len), sizeof(len));
@@ -59,10 +59,10 @@ void HuffmanDecoder::rebuildHuffmanTree(ifstream &fin)
 
 		for (unsigned int j = 0; j < (int)huffmanCode.size(); j++) {
 			if (judgement(huffmanCode[j]) == 0) {
-                getLeftChildAddr();  // 0 is left direction
-            } else if (judgement(huffmanCode[j]) == 1) {
-                getRightChildAddr(); // 1 is right direction
-            } else {
+				getLeftChildAddr();  // 0 is left direction
+			} else if (judgement(huffmanCode[j]) == 1) {
+				getRightChildAddr(); // 1 is right direction
+			} else {
 				cout << "---------- CRITICAL ERROR : INVALID Huffman Encode Table ----------" << endl;
 				exit(EXIT_FAILURE);
 			}
@@ -83,10 +83,10 @@ void HuffmanDecoder::rebuildHuffmanTree(ifstream &fin)
 int HuffmanDecoder::judgement(char oneORzero)
 {
 	if (oneORzero == '0') {
-        return 0;
-    } else if (oneORzero == '1') {          
+		return 0;
+	} else if (oneORzero == '1') {
 		return 1;
-    } else {
+	} else {
 		cout << "---------- CRITICAL ERROR : INVALID Huffman Encode Table ----------" << endl;
 		exit(EXIT_FAILURE);
 	}
@@ -97,10 +97,10 @@ void HuffmanDecoder::getLeftChildAddr()
 {
 	if (cur->left == nullptr) {
         cur->left = createNewNode();
-    }
+	}
 	
 	cur = cur->left;
-	totalNumOfNode += 1;
+	totalNumOfNode++;
 }
 
 
@@ -108,10 +108,10 @@ void HuffmanDecoder::getRightChildAddr()
 {
 	if (cur->right == nullptr) {
         cur->right = createNewNode();
-    }
+	}
 	
 	cur = cur->right;
-	totalNumOfNode += 1;
+	totalNumOfNode++;
 }
 
 
@@ -119,9 +119,7 @@ HuffmanTreeNode* HuffmanDecoder::createNewNode()
 {
 	HuffmanTreeNode *newNode = new HuffmanTreeNode;
 
-
-	if (newNode == nullptr)
-	{
+	if (newNode == nullptr) {
 		cout << "Failed to allocate new node memory !!" << endl;
 		return nullptr;
 	}
@@ -163,8 +161,8 @@ void HuffmanDecoder::decode(vector<Symbol> &symData, ifstream &fin)
 					}
 
 					codeBuf[i] = codeBuf[i] << 1;
-					totalNumOfBit -= 1;
-					countBit += 1;
+					totalNumOfBit--;
+					countBit++;
 
 					if (cur->left == nullptr && cur->right == nullptr) {
 						pushSymData(symData);
