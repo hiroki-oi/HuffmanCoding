@@ -25,7 +25,6 @@ private:
 	
 	std::vector<std::string> symCodeWord;
 	std::string huffmanCode;
-	int codeWordLen;
 
 	int totalNumOfSym;
 
@@ -65,7 +64,7 @@ private:
 
 	void bitStream(const std::vector<Symbol> &symData, std::ofstream &fout);
 
-	int judgement(char oneORzero);
+	int ctoi(char oneORzero);
 
 	void bitUnitOper(std::string huffmanCode, std::ofstream &fout);
 

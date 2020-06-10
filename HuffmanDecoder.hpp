@@ -23,14 +23,14 @@ private:
 
 	int totalNumOfBit;
 	int copyTotalNumOfBit;
-	int countBit;
+	int bitCnt;
 	int symBufIdx;
 
 	bool flag;
 
 	void rebuildHuffmanTree(std::ifstream &fin);
 
-	int judgement(char oneORzero);
+	int ctoi(char oneORzero);
 	void getLeftChildAddr();
 	void getRightChildAddr();
 	HuffmanTreeNode* createNewNode();

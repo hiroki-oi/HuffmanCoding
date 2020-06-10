@@ -15,7 +15,6 @@ HuffmanEncoder::HuffmanEncoder()
 	mergeOfTwoChild = nullptr;
 
 	symCodeWord.resize(MAX);
-	codeWordLen = -1;
 
 	totalNumOfSym = 0;
 
@@ -306,7 +305,7 @@ void HuffmanEncoder::bitStream(const vector<Symbol> &symData, ofstream &fout)
 }
 
 
-int HuffmanEncoder::judgement(char oneORzero)
+int HuffmanEncoder::ctoi(char oneORzero)
 {
 	if (oneORzero == '0') {
 		return 0;
@@ -323,7 +322,7 @@ int HuffmanEncoder::judgement(char oneORzero)
 void HuffmanEncoder::bitUnitOper(string huffmanCode, ofstream &fout)
 {
 	for (unsigned int i = 0; i < (int)huffmanCode.size(); i++) {
-		bitShiftVal = judgement(huffmanCode[i]);
+		bitShiftVal = ctoi(huffmanCode[i]);
 		bitShiftVal = bitShiftVal << bitShiftCnt;
 
 		bitBuf[bitBufIdx] |= bitShiftVal;            
