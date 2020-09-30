@@ -30,8 +30,10 @@ HuffmanEncoder::HuffmanEncoder()
 
 HuffmanEncoder::~HuffmanEncoder()
 {
-	releaseNewNodeMem(rootNode->left);
-	releaseNewNodeMem(rootNode->right);
+	if (rootNode->left != nullptr && rootNode->right != nullptr) {
+		releaseNewNodeMem(rootNode->left);
+		releaseNewNodeMem(rootNode->right);
+	}
 
 	releaseAlloMem();
 }
@@ -46,8 +48,14 @@ void HuffmanEncoder::performEncoding(const vector<Symbol> &symData, ofstream &fo
 	alloNewNode();
 	huffmanTree();
 
-	affixToCodeWord(rootNode->left, '0');             
-	affixToCodeWord(rootNode->right, '1');
+	if (rootNode->left == nullptr || rootNode->right == nullptr) {
+		totalNumOfSym++;
+		symCodeWord[(unsigned short)rootNode->symbol] = "0";
+	}
+	else {
+		affixToCodeWord(rootNode->left, '0');
+		affixToCodeWord(rootNode->right, '1');
+	}
 
 	prtHuffCodeTbl();
 
@@ -207,7 +215,7 @@ void HuffmanEncoder::huffmanTree()
 		first = downHeap();                         
 		second = downHeap();
 
-		if (second == NULL) {
+		if (second == nullptr) {
 			cout << "Complete to build huffman tree" << endl << endl << endl;
 			break;
 		}
@@ -353,7 +361,7 @@ void HuffmanEncoder::releaseNewNodeMem(HuffmanTreeNode *rootNode)
 		rootNode->left = nullptr;
 
 		releaseNewNodeMem(rootNode->right);
-		rootNode->right = NULL;
+		rootNode->right = nullptr;
 	}
 
 	return;

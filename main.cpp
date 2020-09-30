@@ -10,7 +10,7 @@ using namespace std;
 
 int main(void)
 {
-    vector<unsigned short> E{1, 2, 2, 3, 3, 3, 4, 4, 4, 4};
+    vector<unsigned short> E{2, 2, 2, 2, 2, 2};
 
     ofstream fout;
     string filename = "output.encoded";
